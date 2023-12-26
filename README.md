@@ -1,3 +1,76 @@
+# Using LaunchDarkly with Storybook
+
+This is an example storybook create-react-app to demonstrate how to mock the LaunchDarkly React SDK. The instructions
+here are derived from the official [storybook docs](https://storybook.js.org/docs/writing-stories/build-pages-with-storybook#mocking-imports) on how to mock imports.
+
+# Quickstart
+
+1. At your project root dir create [`__mocks__`/launchdarkly-react-client-sdk.ts](https://github.com/launchdarkly-labs/storybook-example/blob/main/__mocks__/launchdarkly-react-client-sdk.ts):
+
+```ts
+// replace _flags with your own flags
+let _flags = { devTestFlag: true };
+export const useFlags = () => _flags
+
+// @ts-ignore
+export function decorator(story, {parameters}) {
+    if (parameters && parameters.flags) {
+        _flags = parameters.flags;
+    }
+    return story();
+}
+```
+
+2. In [.storybook/main.ts](https://github.com/launchdarkly-labs/storybook-example/blob/main/.storybook/main.ts), use webpack aliasing to replace the real import:
+
+```ts
+export default {
+    // ...your other storybook configuration
+
+    webpackFinal: async (config) => {
+        // @ts-ignore
+        config.resolve.alias['launchdarkly-react-client-sdk'] = require.resolve('../__mocks__/launchdarkly-react-client-sdk.ts');
+        return config;
+    },
+};
+```
+
+3. Add the decorator in step 1 to [.storybook/preview.ts](https://github.com/launchdarkly-labs/storybook-example/blob/main/.storybook/preview.ts):
+
+```ts
+import { Preview } from '@storybook/react';
+
+import { decorator } from '../__mocks__/launchdarkly-react-client-sdk';
+
+const preview: Preview = {
+  decorators: [decorator],
+};
+
+export default preview;
+```
+
+4. Finally, set the mock flags in [App.stories.tsx](https://github.com/launchdarkly-labs/storybook-example/blob/main/src/App.stories.tsx):
+
+```ts
+import type { Meta, StoryObj } from '@storybook/react';
+
+import App from './App';
+
+const meta: Meta<typeof App> = {
+    component: App,
+};
+
+export default meta;
+type Story = StoryObj<typeof App>;
+
+export const FirstStory: Story = {
+    parameters: {
+        // replace with your own flags
+        flags: { devTestFlag: 'mock-value' }
+    },
+};
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
