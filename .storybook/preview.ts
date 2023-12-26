@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react";
+import {decorator} from "../__mocks__/launchdarkly-react-client-sdk";
 
 const preview: Preview = {
   parameters: {
@@ -10,6 +11,7 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [decorator],
 };
 
 export default preview;

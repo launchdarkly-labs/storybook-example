@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type {Meta, StoryObj} from '@storybook/react';
 
 import App from './App';
 
@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof App>;
 
 export const FirstStory: Story = {
-    args: {
-        //👇 The args you need here will depend on your component
+    parameters: {
+        flags: {devTestFlag: 'test1'}
     },
 };

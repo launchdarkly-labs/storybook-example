@@ -21,5 +21,10 @@ const config: StorybookConfig = {
     autodocs: "tag",
   },
   staticDirs: ["../public"],
+  webpackFinal: async (config) => {
+    // @ts-ignore
+    config.resolve.alias['launchdarkly-react-client-sdk'] = require.resolve('../__mocks__/launchdarkly-react-client-sdk.ts');
+    return config;
+  },
 };
 export default config;
