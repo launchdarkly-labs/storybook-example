@@ -49,7 +49,7 @@ const preview: Preview = {
 export default preview;
 ```
 
-4. Finally, set the mock flags in [App.stories.tsx](https://github.com/launchdarkly-labs/storybook-example/blob/main/src/App.stories.tsx):
+4. Finally, mock flags in [App.stories.tsx](https://github.com/launchdarkly-labs/storybook-example/blob/main/src/App.stories.tsx):
 
 ```ts
 import type { Meta, StoryObj } from '@storybook/react';
